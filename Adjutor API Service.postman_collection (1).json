@@ -1,0 +1,1977 @@
+{
+	"info": {
+		"_postman_id": "25359d4f-4cca-4ff4-b5a1-8e7e6390302e",
+		"name": "Adjutor API Service",
+		"description": "Adjutor is the API service from Lendsqr provided via RESTful APIs. The services include the following:\n\n- Authorizing direct debit, with consent, for repayments\n    \n- Getting the bank accounts, with consent, tied to a customer's BVN\n    \n- Matching a customer image against what's on their BVN\n    \n- Getting the name and details of a bank account number\n    \n- Getting credit information about a borrower\n    \n- Getting \"probable\" fraud information from our Karma blacklist\n    \n- Accessing credit performance information, for a borrower, from the Lendsqr ecosystem\n    \n\n## Getting Started\n\nTo have access to our APIs is easy.\n\n1. [Sign up for a Lendsqr Adjutor account](https://app.adjutor.io/signup?source=adjutor-api-documentation)\n    \n2. Then create an app and select the services required fror the app\n    \n\n## Terms of Use\n\nTo use Lendsqr Adjutor APIs, you must agree to our terms of use. These terms outline the conditions under which you may access and use our API. Please review these terms carefully before using our API. If you have any questions or concerns about these terms, please contact us at [api@lendsqr.com](https://mailto:api@lendsqr.com).\n\n[You read about our terms here](https://adjutor.io/legal/terms-of-use).\n\n## Getting Support\n\nIf you require assistance at any time when using this documentation or the services, please email [api@lendsqr.com](https://mailto:api@lendsqr.com) and someone would be in touch with you as soon as possible. If you are currently using Lendsqr to lend, you can also contact your account manager at [growth@lendsqr.com](https://mailto:growth@lendsqr.com).\n\n---\n\n# Authentication\n\nAuthentication to the Adjutor API service is performed with the API key. Every endpoint requires authentication, so you will need to add the following header to each request:\n\n`Authorization: Bearer`\n\n`base_url: https://adjutor.lendsqr.com/v2/`\n\n---\n\n# Data Types\n\nAll of the API responses returned are in JSON format, with these data types defined below:\n\n| Type | Description |\n| --- | --- |\n| `string` | A UTF-8 encoded string |\n| `number` | An integer |\n| `datetime` | An ISO8601 encoded DateTime. All datetimes are returned in UTC with offset +00:00 |\n| `decimal` | All monetary values are returned with up to two decimal places and may be positive (20.78) or negative (-32.50) |\n\n# Data Length\n\n| Type | Description | Length |\n| --- | --- | --- |\n| Text fields | `string` | max-length 255 characters |\n| BVN | `integers` starting with 1 or 2 | 11 digits. |\n| Account Number | `integers` | 10 digits. |\n\n---\n\n# Response\n\n| Field | Type | Description |\n| --- | --- | --- |\n| data | `array` | The actual data items you have requested |\n| meta | `object` | Key/value information that is not essential to understanding the resources returned but offers additional detail |\n\n# Meta\n\n| Field | Type | Description |\n| --- | --- | --- |\n| cost | `number` | The cost for the API call in Naira |\n| balance | `number` | The remaining balance in your service wallet in Naira |\n\n---\n\n# Errors\n\nErrors are expressed as a combination of HTTP status codes and an accompanying JSON body providing required detail where possible. You should be able to rely on the HTTP status code alone to determine the cause of the problem.\n\n## Error Response Fields\n\n| Field | Type |\n| --- | --- |\n| message | `string` A human-readable message as to the specifics of the problem. For example, it may contain a detail description of what caused the problem |\n| status number | The HTTP status code used in the response |\n| error_code | `number` |\n\n---",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "16422546"
+	},
+	"item": [
+		{
+			"name": "Validation",
+			"item": [
+				{
+					"name": "Bank Verification Number",
+					"item": [
+						{
+							"name": "Initialize BVN Consent",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"contact\": \"08012345678\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}verification/bvn/:bvn",
+									"host": [
+										"{{base_url}}verification"
+									],
+									"path": [
+										"bvn",
+										":bvn"
+									],
+									"variable": [
+										{
+											"key": "bvn",
+											"value": "22222222222"
+										}
+									]
+								},
+								"description": "This endpoint is used to initiate the process for getting the customer's consent. The integrator is required to pass the customer's BVN and the phone number. If the phone number passed does not match the customer phone on record, an error is returned but with a masked collection of the correct phone and email on the customer account.\n\n#### Request Body\n\n| Field | Type | Description |\n| --- | --- | --- |\n| contact | `String` | The phone number or email of the customer. At the minimum, the phone number must be the one registered to the BVN (e.g., 08012345678, [ado@example.com](https://mailto:ado@example.com)). |"
+							},
+							"response": [
+								{
+									"name": "Initialize BVN",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "",
+												"type": "text",
+												"disabled": true
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"contact\": \"0808***2636\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "https://adjutor.lendsqr.com/v2/verification/bvn/:bvn",
+											"protocol": "https",
+											"host": [
+												"adjutor",
+												"lendsqr",
+												"com"
+											],
+											"path": [
+												"v2",
+												"verification",
+												"bvn",
+												":bvn"
+											],
+											"variable": [
+												{
+													"key": "bvn",
+													"value": ""
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Date",
+											"value": "Wed, 21 Feb 2024 07:04:59 GMT"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Transfer-Encoding",
+											"value": "chunked"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "X-Request-ID",
+											"value": "91cddf27-e8c8-4475-a69f-41d3cfd2c78e"
+										},
+										{
+											"key": "Last-Modified",
+											"value": "Wed, 21 Feb 2024 07:04:38 GMT"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"75-9VH2gGmZSDLe6+ZLGrXFVt5sc5Y\""
+										},
+										{
+											"key": "CF-Cache-Status",
+											"value": "DYNAMIC"
+										},
+										{
+											"key": "Server",
+											"value": "cloudflare"
+										},
+										{
+											"key": "CF-RAY",
+											"value": "858d22e9cc0a6622-AMS"
+										},
+										{
+											"key": "Content-Encoding",
+											"value": "gzip"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"status\": \"otp\",\n    \"message\": \"Please provide OTP sent to contact\",\n    \"data\": \"0808***2636\",\n    \"meta\": {\n        \"cost\": 0,\n        \"balance\": 4815\n    }\n}"
+								},
+								{
+									"name": "Initialize BVN Consent",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "",
+												"type": "text",
+												"disabled": true
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"contact\": \"08012345678\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{base_url}}verification/bvn/:bvn",
+											"host": [
+												"{{base_url}}verification"
+											],
+											"path": [
+												"bvn",
+												":bvn"
+											],
+											"variable": [
+												{
+													"key": "bvn",
+													"value": "22222222222"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Date",
+											"value": "Tue, 17 Dec 2024 19:38:48 GMT"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Transfer-Encoding",
+											"value": "chunked"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "X-Request-ID",
+											"value": "d777a956-ca8a-4213-81db-f5f0c7e8ce82"
+										},
+										{
+											"key": "Last-Modified",
+											"value": "Tue, 17 Dec 2024 19:38:48 GMT"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"75-9VH2gGmZSDLe6+ZLGrXFVt5sc5Y\""
+										},
+										{
+											"key": "CF-Cache-Status",
+											"value": "DYNAMIC"
+										},
+										{
+											"key": "Server",
+											"value": "cloudflare"
+										},
+										{
+											"key": "CF-RAY",
+											"value": "8f3960258a171762-IAD"
+										},
+										{
+											"key": "Content-Encoding",
+											"value": "gzip"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"status\": \"otp\",\n    \"message\": \"Please provide OTP sent to contact\",\n    \"data\": \"0808***2636\",\n    \"meta\": {\n        \"cost\": 0,\n        \"balance\": 4815\n    }\n}"
+								}
+							]
+						},
+						{
+							"name": "Complete Consent and get BVN Details",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"status code as 200\",()=>{\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"response time is less than 600ms\", ()=>{\r",
+											"    pm.expect(pm.response.responseTime).to.be.below(634);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"response message must be valid\",()=>{\r",
+											"    pm.response.to.be.ok;\r",
+											"});\r",
+											"\r",
+											"pm.test(\"response must have json data\",()=>{\r",
+											"    pm.response.to.be.json;\r",
+											"});\r",
+											"\r",
+											"pm.test(\"response must contain string type\",()=>{\r",
+											"    pm.expect(pm.response.text()).to.include(\"reference\");\r",
+											"    pm.expect(pm.response.text()).to.include(\"bvn\");\r",
+											"    pm.expect(pm.response.text()).to.include(\"first_name\");\r",
+											"    pm.expect(pm.response.text()).to.include(\"middle_name\");\r",
+											"    pm.expect(pm.response.text()).to.include(\"last_name\");\r",
+											"    pm.expect(pm.response.text()).to.include(\"mobile\");\r",
+											"});\r",
+											"\r",
+											"const schema ={\r",
+											"    \"type\": \"object\",\r",
+											"    \"properties\":{\r",
+											"        \"type\": \"boolean\"\r",
+											"    }\r",
+											"};\r",
+											"\r",
+											"pm.test('Response is a valid json', ()=>{\r",
+											"    pm.response.to.have.jsonSchema(schema);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Validate this value exists\",()=>{\r",
+											"    pm.expect(pm.response.json().gender).to.equal(\"Male\");\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"otp\": \"623553\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}verification/bvn/:bvn",
+									"host": [
+										"{{base_url}}verification"
+									],
+									"path": [
+										"bvn",
+										":bvn"
+									],
+									"variable": [
+										{
+											"key": "bvn",
+											"value": "22222222222"
+										}
+									]
+								},
+								"description": "This endpoint is used to get the BVN data after the customer's consent has been approved.\n\n### Response fields\n\n| Field | Type | Description |\n| --- | --- | --- |\n| reference | `integer` | Unique reference number (e.g., 10000001) |\n| bvn | `string` | Bank Verification Number (e.g., \"22123456789\") |\n| first_name | `string` | First name of the individual (e.g., \"ADO\") |\n| middle_name | `string` | Middle name of the individual (e.g., \"JOHN\") |\n| last_name | `string` | Last name of the individual (e.g., \"SULE\") |\n| dob | `date` | Date of birth in YYYY-MM-DD format (e.g., \"1990-10-31\") |\n| formatted_dob | `date` | Formatted date of birth (e.g., \"1990-10-31\") |\n| mobile2 | `string` | Secondary mobile number, if applicable (e.g., 08012345678) |\n| mobile | `string` | Primary mobile number (e.g., \"08012345678\") |\n| registration_date | `string` | Date of registration (e.g., \"30-Mar-2015\") |\n| enrollment_bank | `string` | Bank enrollment number (e.g., \"044\") |\n| enrollment_branch | `string` | Branch of enrollment (e.g., \"RET SHOP - BABCOCK UNIVERSITY (137)\") |\n| email | `string` | Email address (e.g., \"[wunmi@yahoo.com](https://mailto:wunmi@yahoo.com)\") |\n| gender | `string` | Gender (e.g., \"Male\") |\n| level_of_account | `string` | Level of account, if applicable (e.g., Tier 2) |\n| lga_of_origin | `string` | Local Government Area of origin (e.g., \"Abeokuta South\") |\n| lga_of_residence | `string` | Local Government Area of residence (e.g., \"Abeokuta South\") |\n| marital_status | `string` | Marital status (e.g., \"Single\") |\n| nin | `string` | National Identification Number, if applicable (e.g., 1234567890) |\n| name_on_card | `string` | Name as it appears on card (e.g., \"ADO JOHN SULE\") |\n| nationality | `string` | Nationality, if applicable (e.g., American) |\n| residential_address | `string` | Residential address (e.g., \"Ogun State\") |\n| state_of_origin | `string` | State of origin (e.g., \"Ogun State\") |\n| state_of_residence | `string` | State of residence (e.g., \"Ogun State\") |\n| watchlisted | `integer` | Watchlist status (e.g., 0 for not watchlisted) |\n| image_url | `string` | URL of the photo (e.g., \"[https://picsum.photos/id/1/5000/3333\"](https://picsum.photos/id/1/5000/3333)) |"
+							},
+							"response": [
+								{
+									"name": "Complete BVN Verification",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"otp\": \"242366\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "https://adjutor.lendsqr.com/v2/verification/bvn/:bvn",
+											"protocol": "https",
+											"host": [
+												"adjutor",
+												"lendsqr",
+												"com"
+											],
+											"path": [
+												"v2",
+												"verification",
+												"bvn",
+												":bvn"
+											],
+											"variable": [
+												{
+													"key": "bvn",
+													"value": ""
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Date",
+											"value": "Wed, 21 Feb 2024 07:05:26 GMT"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Transfer-Encoding",
+											"value": "chunked"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "X-Request-ID",
+											"value": "e522b3f8-6d99-4a10-88e1-e4b962c1f854"
+										},
+										{
+											"key": "Last-Modified",
+											"value": "Wed, 21 Feb 2024 07:05:14 GMT"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"3de-C/X9feDDVRhWa/gVl6sTmdaWpko\""
+										},
+										{
+											"key": "CF-Cache-Status",
+											"value": "DYNAMIC"
+										},
+										{
+											"key": "Server",
+											"value": "cloudflare"
+										},
+										{
+											"key": "CF-RAY",
+											"value": "858d23c7ba346622-AMS"
+										},
+										{
+											"key": "Content-Encoding",
+											"value": "gzip"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"status\": \"success\",\n    \"message\": \"Successful\",\n    \"data\": {\n        \"reference\": 10000001,\n        \"bvn\": \"22123456789\",\n        \"first_name\": \"ADO\",\n        \"middle_name\": \"JOHN\",\n        \"last_name\": \"SULE\",\n        \"dob\": \"1990-10-31\",\n        \"formatted_dob\": \"1990-10-31\",\n        \"mobile2\": null,\n        \"mobile\": \"08012345678\",\n        \"registration_date\": \"30-Mar-2015\",\n        \"enrollment_bank\": \"044\",\n        \"enrollment_branch\": \"RET SHOP - BABCOCK UNIVERSITY (137)\",\n        \"email\": \"wunmi@yahoo.com\",\n        \"gender\": \"Male\",\n        \"level_of_account\": null,\n        \"lga_of_origin\": \"Abeokuta South\",\n        \"lga_of_residence\": \"Abeokuta South\",\n        \"marital_status\": \"Single\",\n        \"nin\": null,\n        \"name_on_card\": \"ADO JOHN SULE\",\n        \"nationality\": null,\n        \"residential_address\": \"Ogun State\",\n        \"state_of_origin\": \"Ogun State\",\n        \"state_of_residence\": \"Ogun State\",\n        \"watchlisted\": 0,\n        \"base64Image\": null,\n        \"image_url\": \"https://picsum.photos/id/1/5000/3333\"\n    },\n    \"meta\": {\n        \"cost\": 20,\n        \"balance\": 4815\n    }\n}"
+								}
+							]
+						}
+					],
+					"description": "Bank Verification Number (BVN) is the national ID system created by Nigerian banks to uniquely identified bank customers in the Nigerian banking ecosystem.\n\nThe banking ecosystem has also created a mechanism where all the bank accounts tied to a specific BVN could be gotten."
+				},
+				{
+					"name": "Get Accounts for a BVN",
+					"item": [
+						{
+							"name": "Initialize BVN Accounts Consent",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"contact\": \"08012345678\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}verification/bvn/:bvn/accounts",
+									"host": [
+										"{{base_url}}verification"
+									],
+									"path": [
+										"bvn",
+										":bvn",
+										"accounts"
+									],
+									"variable": [
+										{
+											"key": "bvn",
+											"value": ""
+										}
+									]
+								},
+								"description": "This endpoint is used to initiate the process for getting customer consent. The integrator is required to pass the customer's BVN and the phone number.\n\n**If the phone number passed does not match the customer phone on record, an error is returned but with a masked collection of the correct phone and email on the customer account.**\n\n``` json\n{\n  \"status\": \"otp\",\n  \"message\": \"Please provide OTP sent to contact\",\n  \"data\": \"ado****@example.com\",\n  \"meta\": {\n    \"cost\": 0,\n    \"balance\": 4735\n  }\n}\n\n ```\n\n#### Request Body\n\n| Field | Type | Description |\n| --- | --- | --- |\n| contact | `String` | The phone number or email of the customer. At the minimum, the phone number must be the one registered to the BVN (e.g., 08012345678, [ado@example.com](https://mailto:ado@example.com)). |"
+							},
+							"response": [
+								{
+									"name": "Initialize BVN Accounts",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "",
+												"type": "text",
+												"disabled": true
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"contact\": \"ado****@example.com\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "https://adjutor.lendsqr.com/v2/verification/bvn/:bvn/accounts",
+											"protocol": "https",
+											"host": [
+												"adjutor",
+												"lendsqr",
+												"com"
+											],
+											"path": [
+												"v2",
+												"verification",
+												"bvn",
+												":bvn",
+												"accounts"
+											],
+											"variable": [
+												{
+													"key": "bvn",
+													"value": ""
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Date",
+											"value": "Wed, 21 Feb 2024 07:17:45 GMT"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Transfer-Encoding",
+											"value": "chunked"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "X-Request-ID",
+											"value": "83e56b5f-fa1e-40d6-a987-79e05cee8fa8"
+										},
+										{
+											"key": "Last-Modified",
+											"value": "Wed, 21 Feb 2024 07:17:30 GMT"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"86-slc23G5+RJfJHR9MiSZECE5kUCk\""
+										},
+										{
+											"key": "CF-Cache-Status",
+											"value": "DYNAMIC"
+										},
+										{
+											"key": "Server",
+											"value": "cloudflare"
+										},
+										{
+											"key": "CF-RAY",
+											"value": "858d35bfa8556622-AMS"
+										},
+										{
+											"key": "Content-Encoding",
+											"value": "gzip"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"status\": \"otp\",\n    \"message\": \"Please provide OTP sent to contact\",\n    \"data\": \"ado****@example.com\",\n    \"meta\": {\n        \"cost\": 0,\n        \"balance\": 4735\n    }\n}"
+								}
+							]
+						},
+						{
+							"name": "Complete Consent and Get BVN Accounts",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"otp\": \"477226\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}verification/bvn/:bvn/accounts",
+									"host": [
+										"{{base_url}}verification"
+									],
+									"path": [
+										"bvn",
+										":bvn",
+										"accounts"
+									],
+									"variable": [
+										{
+											"key": "bvn",
+											"value": ""
+										}
+									]
+								},
+								"description": "This endpoint is used to get the bank accounts. It requires the OTP that has been sent to the customer. OTP to phones are usually sent from PFAlert sender id.\n\n#### Request Body\n\n| Field | Type | Description |\n| --- | --- | --- |\n| otp | `string` | The one-time password for verification (e.g., \"477226\"). |\n\n#### Response Fields\n\n| Field | Type | Description |\n| --- | --- | --- |\n| account_name | `string` | The name of the account holder (e.g., \"ADO JOHN SULE\"). |\n| account_number | `string` | The unique number identifying the account (e.g., \"1234567890\"). |\n| bank_name | `string` | The name of the bank where the account is held (e.g., \"Access Bank Nigeria Plc\"). You can get the list of banks on the /banks endpoint. |\n| bank_code | `string` | The unique code identifying the bank (e.g., \"044\"). You can get the list of banks on the /banks endpoint. |\n| account_status | `string` | The status of the account (e.g., 1). Please see definition below. |\n| account_designation | `string` | The classification of the account holder (e.g., \"INDIVIDUAL\"). |\n| account_type | `string` | The type of account (e.g., \"SAVINGS\"). |\n\n#### Account Status\n\n| Status Code | Description |\n| --- | --- |\n| 1 | Active |\n| 2 | Dormant |\n| 3 | Closed |\n| 4 | PND (Post No Debit) |\n| 5 | PNC (Post No Credit) |\n| 6 | Inactive |\n| 7 | Total Freeze |\n| 8 | Other |"
+							},
+							"response": [
+								{
+									"name": "Complete BVN Accounts",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"otp\": \"998278\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "https://adjutor.lendsqr.com/v2/verification/bvn/:bvn/accounts",
+											"protocol": "https",
+											"host": [
+												"adjutor",
+												"lendsqr",
+												"com"
+											],
+											"path": [
+												"v2",
+												"verification",
+												"bvn",
+												":bvn",
+												"accounts"
+											],
+											"variable": [
+												{
+													"key": "bvn",
+													"value": ""
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Date",
+											"value": "Wed, 21 Feb 2024 07:30:41 GMT"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Transfer-Encoding",
+											"value": "chunked"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "X-Request-ID",
+											"value": "1f01b79c-6b20-4fb8-b25c-b20a4b6efd6d"
+										},
+										{
+											"key": "Last-Modified",
+											"value": "Wed, 21 Feb 2024 07:30:32 GMT"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"74c-DjqwVcI8TtyBwlth2OV3gLYKrlQ\""
+										},
+										{
+											"key": "CF-Cache-Status",
+											"value": "DYNAMIC"
+										},
+										{
+											"key": "Server",
+											"value": "cloudflare"
+										},
+										{
+											"key": "CF-RAY",
+											"value": "858d48d90a446622-AMS"
+										},
+										{
+											"key": "Content-Encoding",
+											"value": "gzip"
+										}
+									],
+									"cookie": [],
+									"body": "{\n\t\"status\": \"success\",\n\t\"message\": \"Successful\",\n\t\"data\": [\n\t\t{\n\t\t\t\"account_name\": \"ADO JOHN SULE\",\n\t\t\t\"account_number\": \"9876543210\",\n\t\t\t\"bank_name\": \"GTBank\",\n\t\t\t\"bank_code\": \"058\",\n\t\t\t\"account_status\": 4,\n\t\t\t\"account_designation\": \"INDIVIDUAL\",\n\t\t\t\"account_type\": \"CURRENT\"\n\t\t},\n\t\t{\n\t\t\t\"account_name\": \"ADO JOHN SULE\",\n\t\t\t\"account_number\": \"1234567890\",\n\t\t\t\"bank_name\": \"Access Bank Nigeria Plc\",\n\t\t\t\"bank_code\": \"044\",\n\t\t\t\"account_status\": 1,\n\t\t\t\"account_designation\": \"INDIVIDUAL\",\n\t\t\t\"account_type\": \"SAVINGS\"\n\t\t}\n\t],\n\t\"meta\": {\n\t\t\"cost\": 20,\n\t\t\"balance\": 4735\n\t}\n}\n"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "Match Customer BVN Image",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"image\": \"string\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}verification/bvn/:bvn/selfies",
+							"host": [
+								"{{base_url}}verification"
+							],
+							"path": [
+								"bvn",
+								":bvn",
+								"selfies"
+							],
+							"variable": [
+								{
+									"key": "bvn",
+									"value": null
+								}
+							]
+						},
+						"description": "This endpoint allows for real-time verification of an individual's Bank Verification Number (BVN) through the comparison of their photograph and facial features with their BVN record, thereby providing an additional layer of security and accuracy in customer information validation.\n\n#### Payload\n\n`image`: `required` image URL\n\n#### Path Variables\n\n`bvn`: `required` BVN of the person with the image to be compared.\n\n#### Response fields\n\n| Field | Type | Description |\n| --- | --- | --- |\n| match | `boolean` | Indicates if a match was found (e.g., true) |\n| similarity | `float` | The percentage probability that the image compared are similar. The higher the number, the greater the chance of similarity (e.g., 99.95) |"
+					},
+					"response": [
+						{
+							"name": "Match customer BVN image",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"image\": \"https://documents.lendsqr.com/irorun/45eab612ad3efff8f3da1e65130be8538b8fd6c8602da4252ec35c61ec18802b1619ba7eda625b3efb671bfc478cad84e834c5ad858722e993889b3xxxxxx.png\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}verification/bvn/:bvn/selfies",
+									"host": [
+										"{{base_url}}verification"
+									],
+									"path": [
+										"bvn",
+										":bvn",
+										"selfies"
+									],
+									"variable": [
+										{
+											"key": "bvn",
+											"value": "22536011111"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Thu, 10 Aug 2023 14:10:33 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "X-Request-ID",
+									"value": "5314f877-acaf-4164-acb7-f1f99b3f1b0d"
+								},
+								{
+									"key": "Last-Modified",
+									"value": "Thu, 10 Aug 2023 14:10:32 GMT"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"82-9k7Nyc6Q89LGBa12YAMXH2UqqJs\""
+								},
+								{
+									"key": "CF-Cache-Status",
+									"value": "DYNAMIC"
+								},
+								{
+									"key": "Server",
+									"value": "cloudflare"
+								},
+								{
+									"key": "CF-RAY",
+									"value": "7f48d2a54d443d13-CDG"
+								},
+								{
+									"key": "Content-Encoding",
+									"value": "gzip"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": \"success\",\n    \"message\": \"Successful\",\n    \"data\": {\n        \"match\": true,\n        \"similarity\": 99.94831085205078\n    },\n    \"meta\": {\n        \"cost\": 30,\n        \"balance\": 1285\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Verify Customer Bank Account",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"account_number\": \"number\",\n    \"bank_code\": \"number\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}verification/bankaccount",
+						"description": "This endpoint is used for verification of a customer's bank account.\n\n#### Payload\n\n`account_number`: `required` account number to be verified\n\n`bank_code`: `required` the bank code for the account number\n\n#### Response Fields\n\n| Field | Type | Description |\n| --- | --- | --- |\n| bank_code | `string` | Central Bank of Nigeria code identifying the bank (e.g., \"058\") |\n| bank_name | `string` | Name of the bank (e.g., \"Example Bank Plc\") |\n| account_name | `string` | Name associated with the account (e.g., \"DOE JOHN\") |\n| account_number | `string` | Account number (e.g., \"0425571111\") |\n| bvn | `string` | Bank Verification Number. The middle 7 numbers are masked with 0s (e.g., \"22000000021\") |"
+					},
+					"response": [
+						{
+							"name": "Verify Customer Bank Account",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"account_number\": \"0425571111\",\n    \"bank_code\": \"058\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{base_url}}verification/bankaccount/bvn"
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Thu, 10 Aug 2023 14:43:21 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "X-Request-ID",
+									"value": "45a5849d-e413-474f-966d-ac800803a5f8"
+								},
+								{
+									"key": "Last-Modified",
+									"value": "Thu, 10 Aug 2023 14:43:21 GMT"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"c9-19Gwq+rB7O302vWla1jPDh/+TTI\""
+								},
+								{
+									"key": "CF-Cache-Status",
+									"value": "DYNAMIC"
+								},
+								{
+									"key": "Server",
+									"value": "cloudflare"
+								},
+								{
+									"key": "CF-RAY",
+									"value": "7f4902b9bb13046b-CDG"
+								},
+								{
+									"key": "Content-Encoding",
+									"value": "gzip"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": \"success\",\n    \"message\": \"Successful\",\n    \"data\": {\n        \"bank_code\": \"058\",\n        \"account_name\": \"DOE JOHN\",\n        \"account_number\": \"0425571111\",\n        \"bvn\": \"22000000021\"\n    },\n    \"meta\": {\n        \"cost\": 10,\n        \"balance\": 1245\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Check Karma for Customer",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}verification/karma/:identity",
+							"host": [
+								"{{base_url}}verification"
+							],
+							"path": [
+								"karma",
+								":identity"
+							],
+							"variable": [
+								{
+									"key": "identity",
+									"value": ""
+								}
+							]
+						},
+						"description": "Karma is a database of blacklisted bad actors within the Lendsqr ecosystem. A bad actor is someone who has been involved with fraud or has tried to request loans with fake identity. A bad actor may also be a chronic defaulter whose loan has been written off.\n\nThis endpoint is used to check if a customer is on the blacklist of bad actors.\n\n#### Path Variables\n\n`identity`: `required` Identity of customer which could be one of the following:\n\n| Field | Description | Format Example |\n| --- | --- | --- |\n| Email Address | Format should be in the form of [email@example.com](https://mailto:email@example.com) | [email@example.com](https://mailto:email@example.com) |\n| Phone Number | Format should be in the form of +2347012345678 | +2347012345678 |\n| Domain Name | Format should be in the form of example.com | example.com |\n| BVN | Format should be in the form of 22212345678 | 22212345678 |\n| NUBAN Account number | Format should be in the form of XXX-1234567890 Where XXX is the CBN bank code | 070-1234567890 for a Fidelity Bank account. |\n| Images | Format is Base64 | Base64 encoded string |\n\n#### Response Fields\n\n| Field | Type | Description |\n| --- | --- | --- |\n| karma_identity | `string` | Unique identifier for karma (e.g., \"0zspgifzbo.ga\") |\n| amount_in_contention | `string` | Amount involved in contention (e.g., \"0.00\") |\n| reason | `string` | Reason for the karma entry, if applicable (e.g., null) |\n| default_date | `date` | Date of default (e.g., \"2020-05-18\") |\n| karma_type | `object` | Type of karma (e.g., {\"karma\": \"Others\"}) |\n| karma_identity_type | `object` | Type of identity associated with karma (e.g., {\"identity_type\": \"Domain\"}) |\n| reporting_entity | `object` | Entity reporting the karma (e.g., {\"name\": \"Blinkcash\", \"email\": \"[support@blinkcash.ng](https://mailto:support@blinkcash.ng)\"}) |"
+					},
+					"response": [
+						{
+							"name": "Check Karma for Customer",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}verification/karma/:identity",
+									"host": [
+										"{{base_url}}verification"
+									],
+									"path": [
+										"karma",
+										":identity"
+									],
+									"variable": [
+										{
+											"key": "identity",
+											"value": "0zspgifzbo.ga"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Tue, 08 Aug 2023 14:26:38 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "X-Request-ID",
+									"value": "0150a3b9-1e2e-4bc1-825e-f4bb024f7463"
+								},
+								{
+									"key": "Last-Modified",
+									"value": "Tue, 08 Aug 2023 14:26:38 GMT"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"157-/X62qo9vh7N9XNeVvLk5BxWrnvs\""
+								},
+								{
+									"key": "CF-Cache-Status",
+									"value": "DYNAMIC"
+								},
+								{
+									"key": "Server",
+									"value": "cloudflare"
+								},
+								{
+									"key": "CF-RAY",
+									"value": "7f386f7a0fc9d430-LOS"
+								},
+								{
+									"key": "Content-Encoding",
+									"value": "gzip"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": \"success\",\n    \"message\": \"Successful\",\n    \"data\": {\n        \"karma_identity\": \"0zspgifzbo.ga\",\n        \"amount_in_contention\": \"0.00\",\n        \"reason\": null,\n        \"default_date\": \"2020-05-18\",\n        \"karma_type\": {\n            \"karma\": \"Others\"\n        },\n        \"karma_identity_type\": {\n            \"identity_type\": \"Domain\"\n        },\n        \"reporting_entity\": {\n            \"name\": \"Blinkcash\",\n            \"email\": \"support@blinkcash.ng\"\n        }\n    },\n    \"meta\": {\n        \"cost\": 10,\n        \"balance\": 1600\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Check for Borrower on Ecosystem",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}verification/ecosystem/:bvn",
+							"host": [
+								"{{base_url}}verification"
+							],
+							"path": [
+								"ecosystem",
+								":bvn"
+							],
+							"variable": [
+								{
+									"key": "bvn",
+									"value": null,
+									"description": "Bank Verification Number"
+								}
+							]
+						},
+						"description": "The Lendsqr ecosystem provides an aggregated view of borrowers which lenders could have access to make decisions. To access this service, the lender must provide an evidence of customer explicit consent.\n\nFurthermore, where it is proven that a consent was never provided, the lender would be liable for all legal cost required to ameliorate issues that may arise. Lender may also be removed from the platform.\n\nThis endpoint is used to verify if a borrower exists on the Lendsqr ecosystem.\n\n#### Path Variables\n\n`bvn`: `required` BVN no. of the person to be checked.\n\n#### Response Fields\n\n| Field | Type | Description |\n| --- | --- | --- |\n| bvn | `string` | Bank Verification Number (e.g., \"22536011111\") |\n| first_name | `string` | First name of the individual (e.g., \"JANE\") |\n| last_name | `string` | Last name of the individual (e.g., \"DOE\") |\n| bvn_phone_number | `string` | Phone number registered with BVN (e.g., \"07062561111\") |\n| date_of_birth | `date` | Date of birth in ISO format (e.g., \"1997-09-10\") |\n| age | `integer` | Age of the individual (e.g., 25) |\n| unique_phone_numbers | `integer` | Count of unique phone numbers (e.g., 0) |\n| phone_number | `string` | Primary phone number (e.g., \"07062561111\") |\n| unique_emails | `integer` | Count of unique email addresses (e.g., 0) |\n| email | `string` | Email address (e.g., \"[janedoe@gmail.com](https://mailto:janedoe@gmail.com)\") |\n| gender | `string` | Gender of the individual (e.g., \"Female\") |\n| lenders | `integer` | Number of lenders interacted with (e.g., 1) |\n| first_account | `date` | Date of first account creation in ISO format (e.g., \"2020-11-16\") |\n| last_account | `date` | Date of last account creation in ISO format (e.g., \"2023-06-26\") |\n| failed_selfie_bvn_check | `integer` | Number of failed BVN selfie checks (e.g., 0) |\n| lending_lenders | `integer` | Number of lending lenders (e.g., 0) |\n| loans | `integer` | Total number of loans (e.g., 0) |\n| loan_amount | `integer` | Total loan amount (e.g., 0) |\n| loan_amount_minimum | `integer` | Minimum loan amount (e.g., 0) |\n| loan_amount_maximum | `integer` | Maximum loan amount (e.g., 150000) |\n| loan_amount_average | `float` | Average loan amount (e.g., 5892.954545) |\n| settled_loans | `integer` | Number of settled loans (e.g., 0) |\n| settled_loan_amount | `integer` | Amount of settled loans (e.g., 0) |\n| settled_loan_amount_paid | `integer` | Amount paid for settled loans (e.g., 0) |\n| running_loans | `integer` | Number of running loans (e.g., 0) |\n| running_loan_amount | `integer` | Amount of running loans (e.g., 0) |\n| past_due_loans | `integer` | Number of past due loans (e.g., 0) |\n| past_due_loan_amount | `integer` | Amount of past due loans (e.g., 0) |\n| past_due_loan_amount_due | `integer` | Amount due for past due loans (e.g., 2000) |\n| penalty | `integer` | Penalty amount (e.g., 0) |\n| penalty_paid | `integer` | Penalty amount paid (e.g., 0) |\n| delayed_paid_loans | `integer` | Number of delayed paid loans (e.g., 0) |\n| delayed_paid_loan_amount | `integer` | Amount of delayed paid loans (e.g., 0) |\n| delayed_paid_loans_trials | `integer` | Trials for delayed paid loans (e.g., 0) |\n| delayed_paid_loans_avg | `integer` | Average trials for delayed paid loans (e.g., 0) |\n| delayed_paid_loans_trials_max | `integer` | Maximum trials for delayed paid loans (e.g., 0) |\n| delayed_paid_loans_trials_min | `integer` | Minimum trials for delayed paid loans (e.g., 0) |\n| first_loan_date | `date` | Date of first loan in ISO format (e.g., \"2020-12-24\") |\n| last_loan_date | `date` | Date of last loan in ISO format (e.g., \"2023-07-20\") |\n| loan_requests | `integer` | Number of loan requests (e.g., 0) |\n| failed_loan_requests | `integer` | Number of failed loan requests (e.g., 0) |\n| logins | `integer` | Number of logins (e.g., 115) |\n| first_login | `date` | Date of first login in ISO format (e.g., \"2023-06-01\") |\n| last_login | `date` | Date of last login in ISO format (e.g., \"2023-08-08\") |\n| unique_login_ips | `integer` | Count of unique login IPs (e.g., 0) |\n| unique_device_ids | `integer` | Count of unique device IDs (e.g., 0) |\n| distinct_mobile_os | `integer` | Count of distinct mobile OS used (e.g., 0) |\n| duplicated_devices | `integer` | Count of duplicated devices (e.g., 0) |\n| shared_device_users | `integer` | Count of shared device users (e.g., 0) |\n| credit_delinquency | `integer` | Credit delinquency flag (e.g., 0) |\n| processed_on | `date` | Date when the data was processed in ISO format (e.g., \"2023-08-08\") |"
+					},
+					"response": [
+						{
+							"name": "Check for Borrower on Ecosystem",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}verification/ecosystem/:bvn",
+									"host": [
+										"{{base_url}}verification"
+									],
+									"path": [
+										"ecosystem",
+										":bvn"
+									],
+									"variable": [
+										{
+											"key": "bvn",
+											"value": "22153475955"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Tue, 08 Aug 2023 14:28:56 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "X-Request-ID",
+									"value": "a7855073-2a36-4924-a21f-077ef89219c0"
+								},
+								{
+									"key": "Last-Modified",
+									"value": "Tue, 08 Aug 2023 14:28:55 GMT"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"591-Cd5yroepYTa3PyDTbhzMyhKotAE\""
+								},
+								{
+									"key": "CF-Cache-Status",
+									"value": "DYNAMIC"
+								},
+								{
+									"key": "Server",
+									"value": "cloudflare"
+								},
+								{
+									"key": "CF-RAY",
+									"value": "7f3872d4eeb8d430-LOS"
+								},
+								{
+									"key": "Content-Encoding",
+									"value": "gzip"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": \"success\",\n    \"message\": \"Successful\",\n    \"data\": {\n        \"bvn\": \"22536011111\",\n        \"first_name\": \"JANE\",\n        \"last_name\": \"DOE\",\n        \"bvn_phone_number\": \"07062561111\",\n        \"date_of_birth\": \"1997-09-10T00:00:00.000Z\",\n        \"age\": 25,\n        \"unique_phone_numbers\": 0,\n        \"phone_number\": \"07062561111\",\n        \"unique_emails\": 0,\n        \"email\": \"janedoe@gmail.com\",\n        \"gender\": \"Female\",\n        \"lenders\": 1,\n        \"first_account\": \"2020-11-16T10:49:57.000Z\",\n        \"last_account\": \"2023-06-26T07:56:37.000Z\",\n        \"failed_selfie_bvn_check\": 0,\n        \"lending_lenders\": 0,\n        \"loans\": 0,\n        \"loan_amount\": 0,\n        \"loan_amount_minimum\": 0,\n        \"loan_amount_maximum\": 150000,\n        \"loan_amount_average\": 5892.954545,\n        \"settled_loans\": 0,\n        \"settled_loan_amount\": 0,\n        \"settled_loan_amount_paid\": 0,\n        \"running_loans\": 0,\n        \"running_loan_amount\": 0,\n        \"past_due_loans\": 0,\n        \"past_due_loan_amount\": 0,\n        \"past_due_loan_amount_due\": 2000,\n        \"penalty\": 0,\n        \"penalty_paid\": 0,\n        \"delayed_paid_loans\": 0,\n        \"delayed_paid_loan_amount\": 0,\n        \"delayed_paid_loans_trials\": 0,\n        \"delayed_paid_loans_avg\": 0,\n        \"delayed_paid_loans_trials_max\": 0,\n        \"delayed_paid_loans_trials_min\": 0,\n        \"first_loan_date\": \"2020-12-24T07:54:37.000Z\",\n        \"last_loan_date\": \"2023-07-20T11:38:02.000Z\",\n        \"loan_requests\": 0,\n        \"failed_loan_requests\": 0,\n        \"logins\": 115,\n        \"first_login\": \"2023-06-01T12:32:27.000Z\",\n        \"last_login\": \"2023-08-08T08:23:49.000Z\",\n        \"unique_login_ips\": 0,\n        \"unique_device_ids\": 0,\n        \"distinct_mobile_os\": 0,\n        \"duplicated_devices\": 0,\n        \"shared_device_users\": 0,\n        \"credit_delinquency\": 0,\n        \"processed_on\": \"2023-08-08T14:02:33.000Z\"\n    },\n    \"meta\": {\n        \"cost\": 25,\n        \"balance\": 1590\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Verify Custormer NIN",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}verification/nin/:nin",
+							"host": [
+								"{{base_url}}verification"
+							],
+							"path": [
+								"nin",
+								":nin"
+							],
+							"variable": [
+								{
+									"key": "nin",
+									"value": ""
+								}
+							]
+						},
+						"description": "This endpoint allows for real-time verification of an individual's National Identification Number (NIN) , thereby providing an additional layer of security and accuracy in customer information validation.\n\n#### Path Variables\n\nnin: `required` NIN of the person to be checked.\n\n#### Response Fields\n\n| Field | Type | Description |\n| --- | --- | --- |\n| nin | `string` | Bank Verification Number (e.g., \"70123456789\") |\n| first_name | `string` | First name of the individual (e.g., \"John\") |\n| middle_name | `string` | Middle name of the individual (e.g., \"Frank\") |\n| last_name | `string` | Last name of the individual (e.g., \"Doe\") |\n| dob | `date` | Date of birth in ISO format (e.g., \"1997-09-10\") |\n| mobile | `string` | Primary phone number (e.g., \"08081234561\") |\n| registration_date | `string` | User NIN registeration date in ISO format (e.g., \"2020-01-01\") |\n| email | `string` | Email address (e.g., \"[johndoe@example.com](https://mailto:johndoe@example.com)\") |\n| gender | `string` | Gender of the individual (e.g., \"Female\") |\n| marital_status | `string` | Marital Status of the individual (e.g., \"Single\") |\n| state_of_residence | `string` | State of Residence of the individual (e.g., \"Lagos\") |\n| image_url | `string` | NIN Image Url (e.g. [https://documents.lendsqr.com/image_url.png](https://documents.lendsqr.com/image_url.png)) |"
+					},
+					"response": [
+						{
+							"name": "Verify Custormer NIN",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}verification/nin/:nin",
+									"host": [
+										"{{base_url}}verification"
+									],
+									"path": [
+										"nin",
+										":nin"
+									],
+									"variable": [
+										{
+											"key": "nin",
+											"value": "70123456789",
+											"description": "National Identity Number"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Tue, 08 Aug 2023 14:28:56 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "X-Request-ID",
+									"value": "a7855073-2a36-4924-a21f-077ef89219c0"
+								},
+								{
+									"key": "Last-Modified",
+									"value": "Tue, 08 Aug 2023 14:28:55 GMT"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"591-Cd5yroepYTa3PyDTbhzMyhKotAE\""
+								},
+								{
+									"key": "CF-Cache-Status",
+									"value": "DYNAMIC"
+								},
+								{
+									"key": "Server",
+									"value": "cloudflare"
+								},
+								{
+									"key": "CF-RAY",
+									"value": "7f3872d4eeb8d430-LOS"
+								},
+								{
+									"key": "Content-Encoding",
+									"value": "gzip"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": \"success\",\n    \"message\": \"Successful\",\n    \"data\": {\n        \"nin\": \"70123456789\",\n        \"first_name\": \"John\",\n        \"middle_name\": \"Doe\",\n        \"last_name\": \"Frank\",\n        \"dob\": \"1982-01-01\",\n        \"formatted_dob\": \"1982-01-01\",\n        \"mobile2\": \"08081234561\",\n        \"mobile\": \"08081234561\",\n        \"registration_date\": \"2020-01-01\",\n        \"email\": \"email@example.com\",\n        \"gender\": \"Male\",\n        \"marital_status\": \"single\",\n        \"state_of_residence\": \"lagos\",\n        \"base64Image\": \"[base64Image]\",\n        \"image_url\": \"https://documents.lendsqr.com/image_url.png\"\n    },\n    \"meta\": {\n        \"cost\": 45,\n        \"balance\": 3435\n    }\n}"
+						}
+					]
+				}
+			],
+			"description": "The Validation APIs are resources and tools for validating customer information. These validation processes make use of APIs that allow you to confirm the accuracy of customer information using their Bank Verification Numbers (BVNs), email addresses, or phone numbers.\n\nThe APIs are designed to help you ensure that customer information is accurate and up-to-date, providing you with a reliable and efficient method for validating customer data."
+		},
+		{
+			"name": "Credit Bureaus",
+			"item": [
+				{
+					"name": "Get Credit Report from CRC Credit Bureau",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{base_url}}creditbureaus/crc/:bvn",
+							"host": [
+								"{{base_url}}creditbureaus"
+							],
+							"path": [
+								"crc",
+								":bvn"
+							],
+							"variable": [
+								{
+									"key": "bvn",
+									"value": "",
+									"description": "This must be a valid Bank Verification Number"
+								}
+							]
+						},
+						"description": "This request is used to check the CRC database for the credit history of a customer using their BVN.\n\n#### Path Variables\n\n`bvn`: `required` The BVN of the customer."
+					},
+					"response": [
+						{
+							"name": "Get Credit Report from CRC Credit Bureau",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{base_url}}creditbureaus/crc/:bvn",
+									"host": [
+										"{{base_url}}creditbureaus"
+									],
+									"path": [
+										"crc",
+										":bvn"
+									],
+									"variable": [
+										{
+											"key": "bvn",
+											"value": "22293381111"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Tue, 08 Aug 2023 14:45:13 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "X-Request-ID",
+									"value": "b0a64f17-3b9c-486a-bcd9-238c74c8dc6b"
+								},
+								{
+									"key": "Last-Modified",
+									"value": "Tue, 08 Aug 2023 14:45:11 GMT"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"3a9-O71eH/thvISxq/G7zT9AeNi1Bl4\""
+								},
+								{
+									"key": "CF-Cache-Status",
+									"value": "DYNAMIC"
+								},
+								{
+									"key": "Server",
+									"value": "cloudflare"
+								},
+								{
+									"key": "CF-RAY",
+									"value": "7f388aa9590fc4fc-LOS"
+								},
+								{
+									"key": "Content-Encoding",
+									"value": "gzip"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": \"success\",\n    \"message\": \"Successful\",\n    \"data\": {\n        \"consdisclaimer\": {\n            \"getdisclaimercontent\": {\n                \"_x0031_\": \"1\"\n            }\n        },\n        \"consumer_relation\": \"\",\n        \"last_checked_date\": \"2023-06-29 12:00:40\",\n        \"credit_nano_summary\": {\n            \"summary\": {\n                \"last_reported_date\": \"31-MAY-2023\",\n                \"has_creditfacilities\": \"YES\",\n                \"no_of_delinqcreditfacilities\": \"2\"\n            }\n        },\n        \"mfcredit_nano_summary\": {\n            \"summary\": {\n                \"last_reported_date\": \"31-MAY-2023\",\n                \"has_creditfacilities\": \"YES\",\n                \"no_of_delinqcreditfacilities\": \"1\"\n            }\n        },\n        \"mgcredit_nano_summary\": {\n            \"summary\": {\n                \"has_creditfacilities\": \"NO\",\n                \"no_of_delinqcreditfacilities\": \"0\"\n            }\n        },\n        \"nano_consumer_profile\": {\n            \"consumer_details\": {\n                \"name\": \"JOHN DOE\",\n                \"ruid\": \"1112020002201111\",\n                \"gender\": \"001\",\n                \"last_name\": \"DOE\",\n                \"first_name\": \"JOHN\",\n                \"citizenship\": \"NG\",\n                \"date_of_birth\": \"01-OCT-1960\",\n                \"identification\": {\n                    \"ruid\": \"1112020002201111\",\n                    \"id_value\": \"22293381111\",\n                    \"source_id\": \"BVN\",\n                    \"id_display_name\": \"Business Verification Number\"\n                }\n            }\n        }\n    },\n    \"meta\": {\n        \"cost\": 100,\n        \"balance\": 1355\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Get Credit Report from FirstCentral Credit Bureau",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}creditbureaus/firstcentral/:bvn",
+							"host": [
+								"{{base_url}}creditbureaus"
+							],
+							"path": [
+								"firstcentral",
+								":bvn"
+							],
+							"variable": [
+								{
+									"key": "bvn",
+									"value": "",
+									"description": "This must be a valid Bank Verification Number"
+								}
+							]
+						},
+						"description": "This request is used to check the CRC database for the credit history of a customer using their BVN.\n\n#### Path Variables\n\n`bvn`: `required` The BVN of the customer."
+					},
+					"response": [
+						{
+							"name": "Get Credit Report from FirstCentral Credit Bureau",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}creditbureaus/firstcentral/:bvn",
+									"host": [
+										"{{base_url}}creditbureaus"
+									],
+									"path": [
+										"firstcentral",
+										":bvn"
+									],
+									"variable": [
+										{
+											"key": "bvn",
+											"value": "22293381111"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Mon, 14 Aug 2023 13:26:10 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "X-Request-ID",
+									"value": "215fcd37-0d7f-4fc8-9031-7fa20e55bad0"
+								},
+								{
+									"key": "Last-Modified",
+									"value": "Mon, 14 Aug 2023 13:26:10 GMT"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"5da-eIapFMBHh+VQsgkRqx4HYnwZad4\""
+								},
+								{
+									"key": "CF-Cache-Status",
+									"value": "DYNAMIC"
+								},
+								{
+									"key": "Server",
+									"value": "cloudflare"
+								},
+								{
+									"key": "CF-RAY",
+									"value": "7f698727981103d6-LIS"
+								},
+								{
+									"key": "Content-Encoding",
+									"value": "gzip"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": \"success\",\n    \"message\": \"Successful\",\n    \"data\": [\n        {\n            \"SubjectList\": [\n                {\n                    \"Reference\": \"2663443\",\n                    \"ConsumerID\": \"2663443\",\n                    \"SearchOutput\": \"DOE JANE, dantata estate kubwa abuja\"\n                }\n            ]\n        },\n        {\n            \"PersonalDetailsSummary\": [\n                {\n                    \"Gender\": \"Female\",\n                    \"Header\": \"PERSONAL DETAILS SUMMARY: DOE JANE\",\n                    \"Surname\": \"DOE\",\n                    \"BirthDate\": \"19/03/1997\",\n                    \"FirstName\": \"JANE\",\n                    \"OtheridNo\": \"\",\n                    \"CellularNo\": \"2348169591111\",\n                    \"ConsumerID\": \"2663443\",\n                    \"Dependants\": \"0\",\n                    \"OtherNames\": \"\",\n                    \"PassportNo\": null,\n                    \"PencomIDNo\": \"\",\n                    \"Nationality\": \"Nigeria\",\n                    \"ReferenceNo\": null,\n                    \"EmailAddress\": \"\",\n                    \"NationalIDNo\": \"\",\n                    \"MaritalStatus\": null,\n                    \"EmployerDetail\": null,\n                    \"PostalAddress1\": \"DANTATA ESTATE ABUJA FEDERAL CAPITAL TERRITORY\",\n                    \"PostalAddress2\": \"15\",\n                    \"PostalAddress3\": \"\",\n                    \"PostalAddress4\": \" Nigeria\",\n                    \"HomeTelephoneNo\": \"2348169591111\",\n                    \"WorkTelephoneNo\": \"2348169591111\",\n                    \"DriversLicenseNo\": null,\n                    \"PropertyOwnedType\": \"\",\n                    \"BankVerificationNo\": \"22293381111\",\n                    \"ResidentialAddress1\": \"10nasiru dantata estate kubwa abuja\",\n                    \"ResidentialAddress2\": \"\",\n                    \"ResidentialAddress3\": \"\",\n                    \"ResidentialAddress4\": \" \"\n                }\n            ]\n        },\n        {\n            \"CreditSummary\": [\n                {\n                    \"NumberofAccountsInBadStanding\": \"0\",\n                    \"TotalNumberOfAccountsReported\": \"6\",\n                    \"NumberOfAccountsInGoodStanding\": \"6\"\n                }\n            ]\n        },\n        {\n            \"PerformanceClassification\": [\n                {\n                    \"NoOfLoansLost\": \"0\",\n                    \"NoOfLoansDoubtful\": \"0\",\n                    \"NoOfLoansPerforming\": \"6\",\n                    \"NoOfLoansSubstandard\": \"1\"\n                }\n            ]\n        },\n        {\n            \"EnquiryDetails\": [\n                {\n                    \"ProductID\": \"63\",\n                    \"MatchingRate\": \"90\",\n                    \"SubscriberEnquiryEngineID\": \"179484634\",\n                    \"SubscriberEnquiryResultID\": \"22059650\"\n                }\n            ]\n        }\n    ],\n    \"meta\": {\n        \"cost\": 100,\n        \"balance\": 1025\n    }\n}"
+						}
+					]
+				}
+			],
+			"description": "The Credit Bureaus folder contains resources and tools for accessing credit information through credit bureau integrations."
+		},
+		{
+			"name": "Embedded Loans and Payments",
+			"item": [
+				{
+					"name": "Loans",
+					"item": [
+						{
+							"name": "Get Loan Products",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer sk_live_1wT7Xg2UxhgFUcTwhg47It14OUI18aYHbFsblcmt",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"url": "{{base_url}}loans/products",
+								"description": "This endpoint is used to retrieve all the loan products a distributor is subscribed to. As mentioned, this could be one or multiple loan product(s) from a single lender or multiple loan products from multiple lenders."
+							},
+							"response": [
+								{
+									"name": "Get Loan Products",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": "{{base_url}}loans/products"
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "X-Request-ID",
+											"value": "77ce44b5-0e77-4b9e-98bd-cd1c29364b64"
+										},
+										{
+											"key": "Last-Modified",
+											"value": "Tue, 18 Jul 2023 07:40:31 GMT"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "4427"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"114b-m9v4s05oZQ3h51ABYSfpztJ214s\""
+										},
+										{
+											"key": "Date",
+											"value": "Tue, 18 Jul 2023 07:40:34 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"status\": \"success\",\n    \"message\": \"Successful\",\n    \"data\": [\n        {\n            \"product_id\": \"c9f0f895fb98ab9159f51fd0297e236d\",\n            \"name\": \"15 days for liberty\",\n            \"description\": null,\n            \"disburse_to\": \"wallet\",\n            \"collection_method\": \"debit_card\",\n            \"interest_rate\": 25,\n            \"interest_period\": null,\n            \"min_amount\": 5000,\n            \"max_amount\": 100000,\n            \"min_interest_amount\": null,\n            \"allow_multi_tenor\": 0,\n            \"frequency\": null,\n            \"min_tenor_value\": null,\n            \"min_tenor_period\": null,\n            \"max_tenor_value\": 0,\n            \"max_tenor_period\": null,\n            \"require_guarantor\": 1,\n            \"require_loan_offer\": 0\n        },\n        {\n            \"product_id\": \"45c48cce2e2d7fbdea1afc51c7c6ad26\",\n            \"name\": \"30 days for liberty\",\n            \"description\": null,\n            \"disburse_to\": \"wallet\",\n            \"collection_method\": \"debit_card\",\n            \"interest_rate\": 18,\n            \"interest_period\": null,\n            \"min_amount\": 800,\n            \"max_amount\": 9000,\n            \"min_interest_amount\": null,\n            \"allow_multi_tenor\": 0,\n            \"frequency\": null,\n            \"min_tenor_value\": null,\n            \"min_tenor_period\": null,\n            \"max_tenor_value\": 0,\n            \"max_tenor_period\": null,\n            \"require_guarantor\": 1,\n            \"require_loan_offer\": 0\n        },\n        {\n            \"product_id\": \"aab3238922bcc25a6f606eb525ffdc56\",\n            \"name\": \"Nano Loans - 15 days\",\n            \"description\": \"test\",\n            \"disburse_to\": \"wallet\",\n            \"collection_method\": \"debit_card\",\n            \"interest_rate\": 8,\n            \"interest_period\": \"months\",\n            \"min_amount\": 10,\n            \"max_amount\": 10000000,\n            \"min_interest_amount\": 9,\n            \"allow_multi_tenor\": 0,\n            \"frequency\": null,\n            \"min_tenor_value\": null,\n            \"min_tenor_period\": \"months\",\n            \"max_tenor_value\": null,\n            \"max_tenor_period\": \"months\",\n            \"require_guarantor\": 0,\n            \"require_loan_offer\": 0\n        },\n        {\n            \"product_id\": \"6f4922f45568161a8cdf4ad2299f6d23\",\n            \"name\": \"Nano Loans - 30 days\",\n            \"description\": null,\n            \"disburse_to\": \"wallet\",\n            \"collection_method\": \"debit_card\",\n            \"interest_rate\": 18,\n            \"interest_period\": null,\n            \"min_amount\": 5000,\n            \"max_amount\": 50000,\n            \"min_interest_amount\": null,\n            \"allow_multi_tenor\": 0,\n            \"frequency\": null,\n            \"min_tenor_value\": null,\n            \"min_tenor_period\": null,\n            \"max_tenor_value\": 0,\n            \"max_tenor_period\": null,\n            \"require_guarantor\": 0,\n            \"require_loan_offer\": 1\n        },\n        {\n            \"product_id\": \"ea5d2f1c4608232e07d3aa3d998e5135\",\n            \"name\": \"ussdEasy\",\n            \"description\": \"\",\n            \"disburse_to\": \"bank\",\n            \"collection_method\": \"debit_card\",\n            \"interest_rate\": 20,\n            \"interest_period\": \"flat\",\n            \"min_amount\": 1000,\n            \"max_amount\": 5000,\n            \"min_interest_amount\": 1000,\n            \"allow_multi_tenor\": 0,\n            \"frequency\": null,\n            \"min_tenor_value\": null,\n            \"min_tenor_period\": null,\n            \"max_tenor_value\": 7,\n            \"max_tenor_period\": null,\n            \"require_guarantor\": 0,\n            \"require_loan_offer\": 0\n        },\n        {\n            \"product_id\": \"fc490ca45c00b1249bbe3554a4fdf6fb\",\n            \"name\": \"ussdMedium\",\n            \"description\": \"\",\n            \"disburse_to\": \"bank\",\n            \"collection_method\": \"debit_card\",\n            \"interest_rate\": 20,\n            \"interest_period\": \"flat\",\n            \"min_amount\": 1000,\n            \"max_amount\": 5000,\n            \"min_interest_amount\": 1000,\n            \"allow_multi_tenor\": 0,\n            \"frequency\": null,\n            \"min_tenor_value\": null,\n            \"min_tenor_period\": null,\n            \"max_tenor_value\": 15,\n            \"max_tenor_period\": null,\n            \"require_guarantor\": 0,\n            \"require_loan_offer\": 0\n        },\n        {\n            \"product_id\": \"3295c76acbf4caaed33c36b1b5fc2cb1\",\n            \"name\": \"ussdHard\",\n            \"description\": \"\",\n            \"disburse_to\": \"bank\",\n            \"collection_method\": \"debit_card\",\n            \"interest_rate\": 20,\n            \"interest_period\": \"flat\",\n            \"min_amount\": 1000,\n            \"max_amount\": 5000,\n            \"min_interest_amount\": 1000,\n            \"allow_multi_tenor\": 0,\n            \"frequency\": null,\n            \"min_tenor_value\": null,\n            \"min_tenor_period\": null,\n            \"max_tenor_value\": 30,\n            \"max_tenor_period\": null,\n            \"require_guarantor\": 0,\n            \"require_loan_offer\": 0\n        },\n        {\n            \"product_id\": \"a597e50502f5ff68e3e25b9114205d4a\",\n            \"name\": \"30 days for liberty\",\n            \"description\": null,\n            \"disburse_to\": \"wallet\",\n            \"collection_method\": \"debit_card\",\n            \"interest_rate\": 10,\n            \"interest_period\": \"months\",\n            \"min_amount\": 1000,\n            \"max_amount\": 9000,\n            \"min_interest_amount\": 1000,\n            \"allow_multi_tenor\": 1,\n            \"frequency\": null,\n            \"min_tenor_value\": 1,\n            \"min_tenor_period\": \"months\",\n            \"max_tenor_value\": 5,\n            \"max_tenor_period\": \"months\",\n            \"require_guarantor\": 1,\n            \"require_loan_offer\": 0\n        },\n        {\n            \"product_id\": \"0336dcbab05b9d5ad24f4333c7658a0e\",\n            \"name\": \"30 days for liberty\",\n            \"description\": null,\n            \"disburse_to\": \"wallet\",\n            \"collection_method\": \"debit_card\",\n            \"interest_rate\": 10,\n            \"interest_period\": \"months\",\n            \"min_amount\": 3000,\n            \"max_amount\": 9000,\n            \"min_interest_amount\": 1000,\n            \"allow_multi_tenor\": 1,\n            \"frequency\": null,\n            \"min_tenor_value\": 15,\n            \"min_tenor_period\": \"days\",\n            \"max_tenor_value\": 90,\n            \"max_tenor_period\": \"days\",\n            \"require_guarantor\": 1,\n            \"require_loan_offer\": 0\n        },\n        {\n            \"product_id\": \"34ed066df378efacc9b924ec161e7639\",\n            \"name\": \"LC Multi tenor test\",\n            \"description\": \"Test for LC Multi tenor\",\n            \"disburse_to\": \"wallet\",\n            \"collection_method\": \"debit_card\",\n            \"interest_rate\": 5,\n            \"interest_period\": \"months\",\n            \"min_amount\": 5000,\n            \"max_amount\": 50000,\n            \"min_interest_amount\": 1000,\n            \"allow_multi_tenor\": 1,\n            \"frequency\": \"monthly\",\n            \"min_tenor_value\": 1,\n            \"min_tenor_period\": \"months\",\n            \"max_tenor_value\": 3,\n            \"max_tenor_period\": \"months\",\n            \"require_guarantor\": 0,\n            \"require_loan_offer\": 0\n        }\n    ]\n}"
+								}
+							]
+						},
+						{
+							"name": "Initialize Loan Application",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"product_id\": \"c9f0f895fb98ab9159f51fd0297e236d\",\n    \"meta\": {\n        \"email\": \"froggy@lendsqr.com\",\n        \"phone_number\": \"08089722636\"\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{base_url}}loans/initialize",
+								"description": "Using the product ID that has been retrieved from the GET loan products endpoint, make a call to this endpoint to generate the web page URL that can be embedded within your web or mobile platform.\n\nThe request body also allows for meta fields that would prepoulate and disable these form fields within the the web page\n\n> NOTE: All fields on the web page would be disabled except email and phone number as these details may be different on the lender's plaform. \n  \n\n### Meta fields\n| Property | Type | Details | **Options** |\n| --- | --- | --- | --- |\n| `requested_amount` | number | This should be the amount the customer wants to check out with (BNPL) or has requested.  <br>Currency is in Naira | NA |\n| `proposed_tenor` | number | This is the duration for the loan before repayment kicks in. The range for this is decided by the loan product selected however customers can specify any value within that range. | NA |\n| `proposed_tenor_period` | `string` | This is the measurement of time that drives the proposed_tenor entered | days  <br>weeks  <br>months |\n| `gender` | `string` | male, female | male;  <br>female |\n| `marital_status` | `string` | The marital status of the user | married;  <br>single;  <br>divorced;  <br>separated;  <br>widowed |\n| `location` | `string` | The residential state of the user | States only:  <br>Lagos;  <br>Oyo etc. |\n| `no_of_dependent` | integer | 0, 5 | 0,  <br>5 etc. |\n| `type_of_residence` | `string` | The type of home residence the user lives in. There are currently three options | own house,  <br>rented apartment, parents apartment |\n| `education_attainment` | `string` | The highest level of eductaional attainment by the user. There are currently four options | MSc and above;  <br>BSc, HND and Other Equivalent;  <br>Diploma/School Cert; Others |\n| `employment_status` | `string` | The employment status of the user. There are currently four options | employed,  <br>self employed, unemployed,  <br>retired |\n| `bvn` | `string` | 22222222222 | NA |\n| `phone_number` | `string` | 0805555555 |  |\n| `working_period` | integer | 1 |  |\n| `time_with_current_employer` | integer | 1 |  |\n| `bvn_phone` | `string` | 08106666666 |  |\n| `official_email` | `string` | [male@female.com](https://) |  |\n| `personal_email` | `string` | [male@female.com](https://) |  |\n| `amount` | `string` | 5000 |  |"
+							},
+							"response": [
+								{
+									"name": "Initialize Loan Application",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"product_id\": \"c9f0f895fb98ab9159f51fd0297e236d\",\n    \"meta\": {\n        \"email\": \"ado.john.sule@example.com\",\n        \"phone_number\": \"08012345678\"\n    }\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{base_url}}loans/initialize"
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "X-Request-ID",
+											"value": "b3702fe8-c53f-49dc-b708-b0cf1b237184"
+										},
+										{
+											"key": "Last-Modified",
+											"value": "Tue, 18 Jul 2023 08:05:17 GMT"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "81"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"51-OSar/GFq53hdcXnYSHcSuWvsar4\""
+										},
+										{
+											"key": "Date",
+											"value": "Tue, 18 Jul 2023 08:05:24 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"status\": \"success\",\n    \"message\": \"Successful\",\n    \"data\": {\n        \"reference\": \"LSQDTmKBFL04sO2F29Fl\",\n        \"url\": \"https://l.lsq.li/2Yg\"\n    }\n}"
+								}
+							]
+						},
+						{
+							"name": "Get Loan",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}loans/:reference",
+									"host": [
+										"{{base_url}}loans"
+									],
+									"path": [
+										":reference"
+									],
+									"variable": [
+										{
+											"key": "reference",
+											"value": "LSQDTCdGYL0ktgJnO0bs"
+										}
+									]
+								},
+								"description": "This endpoint is used to retrieve the details of a loan or loan request made via your platform as a distributor."
+							},
+							"response": [
+								{
+									"name": "Get Loan",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{base_url}}loans/:reference",
+											"host": [
+												"{{base_url}}loans"
+											],
+											"path": [
+												":reference"
+											],
+											"variable": [
+												{
+													"key": "reference",
+													"value": "LSQDTCdGYL0ktgJnO0bs"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "X-Request-ID",
+											"value": "1016848a-b496-49c5-84d3-a920397d22dc"
+										},
+										{
+											"key": "Last-Modified",
+											"value": "Thu, 20 Jul 2023 08:29:09 GMT"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "742"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"2e6-CTC54l/r/cxZ3rlqhKA+gFUyZyk\""
+										},
+										{
+											"key": "Date",
+											"value": "Thu, 20 Jul 2023 08:29:13 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"status\": \"success\",\n    \"message\": \"Successful\",\n    \"data\": {\n        \"customer_type\": \"Individual\",\n        \"tenor\": 6,\n        \"tenor_period\": \"weeks\",\n        \"status\": {\n            \"status\": \"CANCELLED\",\n            \"can_request\": 1,\n            \"can_cancel\": 0\n        },\n        \"user\": {\n            \"first_name\": \"Ado\",\n            \"last_name\": \"John Sule\",\n            \"phone_number\": \"08012345678\",\n            \"email\": \"\",\n            \"photo_url\": \"https://picsum.photos/id/1/5000/3333\",\n            \"referral_code\": \"FUER4D\"\n        },\n        \"interest_rate\": 5,\n        \"interest_period\": \"months\",\n        \"reference\": \"LSQDTCdGYL0ktgJnO0bs\",\n        \"loan_amount\": 5000,\n        \"interest_due\": 1000,\n        \"amount_disbursed\": null,\n        \"paid\": 0,\n        \"reject_reason\": null,\n        \"channel\": \"web\",\n        \"disburse_to\": \"wallet\",\n        \"multi_tenor\": false,\n        \"payment_link_hash\": \"blej\"\n    }\n}"
+								}
+							]
+						}
+					],
+					"description": "Embedded loans allows you as a third-party to offer loan services to your customers on your platform without having to be a lender yourself.",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					]
+				},
+				{
+					"name": "Pay with wallet",
+					"item": [
+						{
+							"name": "Initialize Payment",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer sk_test_5N5FcApMCqN0DsDH3r6Ve292Q2peJGC2ZIynMab0",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"amount\": 5000,\n    \"description\": \"Payment for beans, yam and egg\",\n    \"organization_id\": \"37a749d808e46495a8da1e5352d03cae\",\n    \"callback_url\": \"https://lendsqr.com\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{base_url}}payments/initialize",
+								"description": "This endpoint generates the payment link that would open a web page that would allow customers to log into the lender's account and initiate the relevant payment.\n\nYou would provide us with a callback URL that would serve as a redirect for customers once payment has been made."
+							},
+							"response": [
+								{
+									"name": "Initialize Payment",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer sk_test_5N5FcApMCqN0DsDH3r6Ve292Q2peJGC2ZIynMab0",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"amount\": 5000,\n    \"description\": \"Payment for beans and egg\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{base_url}}payments/initialize"
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "X-Request-ID",
+											"value": "b90557c9-1497-414f-86b4-9f89d3361e52"
+										},
+										{
+											"key": "Last-Modified",
+											"value": "Sun, 23 Jul 2023 18:55:19 GMT"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "108"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"6c-IGmND8VHD+WKmPUjHpwPnBLnwk8\""
+										},
+										{
+											"key": "Date",
+											"value": "Sun, 23 Jul 2023 18:55:20 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"status\": \"success\",\n    \"message\": \"Successful\",\n    \"data\": {\n        \"reference\": \"9ZyuoKwn3ENs12YU\",\n        \"url\": \"9ZyuoKwn3ENs12YU\"\n    }\n}"
+								}
+							]
+						},
+						{
+							"name": "Query Payment",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer sk_test_5N5FcApMCqN0DsDH3r6Ve292Q2peJGC2ZIynMab0",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}payments/:reference",
+									"host": [
+										"{{base_url}}payments"
+									],
+									"path": [
+										":reference"
+									],
+									"variable": [
+										{
+											"key": "reference",
+											"value": ""
+										}
+									]
+								},
+								"description": "This endpoint is used to query the details of the payment made."
+							},
+							"response": [
+								{
+									"name": "Query Payment",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer sk_test_5N5FcApMCqN0DsDH3r6Ve292Q2peJGC2ZIynMab0",
+												"type": "text"
+											}
+										],
+										"url": "{{base_url}}payments/9ZyuoKwn3ENs12YU"
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "X-Request-ID",
+											"value": "43840982-dee5-49a3-acda-4650c01a11cf"
+										},
+										{
+											"key": "Last-Modified",
+											"value": "Sun, 23 Jul 2023 18:56:43 GMT"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "369"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"171-zzSQFFLrRm98A9YAgrI4FQiBWHs\""
+										},
+										{
+											"key": "Date",
+											"value": "Sun, 23 Jul 2023 18:56:44 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"status\": \"success\",\n    \"message\": \"Successful\",\n    \"data\": {\n        \"id\": 3,\n        \"org_id\": 136,\n        \"distributor_id\": 2,\n        \"transaction_id\": null,\n        \"reference\": \"9ZyuoKwn3ENs12YU\",\n        \"amount\": 5000,\n        \"description\": \"Payment for beans and egg\",\n        \"callback_url\": null,\n        \"created_on\": \"2023-07-23T17:55:20.000Z\",\n        \"created_by\": null,\n        \"modified_on\": null,\n        \"modified_by\": null,\n        \"deleted_flag\": 0,\n        \"deleted_on\": null,\n        \"deleted_by\": null\n    }\n}"
+								}
+							]
+						}
+					],
+					"description": "Our Pay with Wallet solution allows your customers to make payment for their purchases via various account holding platforms. This solution is viable to customers who have accounts with a lender, on the Lendsqr platform that is activated for this program."
+				}
+			],
+			"description": "## Introduction\n\nEmbedded loans and payments offers third-party distributors with Lendsqr the option to offer loans and payment options to customers on their platform outside Lendsqr."
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": {
+			"token": "{{access_token}}"
+		}
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "https://adjutor.lendsqr.com/v2/",
+			"type": "string"
+		},
+		{
+			"key": "access_token",
+			"value": "sk_live_Hfvcf9srOs5pPWDporlAOWpDqrjon0y9PeUysTtB",
+			"type": "string"
+		},
+		{
+			"key": "access_token",
+			"value": "",
+			"type": "string",
+			"disabled": true
+		},
+		{
+			"key": "x_access_token",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
